@@ -1,25 +1,23 @@
-const {app, BrowserWindow, Menu, ipcMain} = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 
-
-ipcMain.on('msg',(event, data) => {
-    console.warn(data)
-})
+ipcMain.on("msg", (event, data) => {
+  console.warn(data);
+});
 
 function createWindow() {
-    const window = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        }
-    })
-    window.loadFile('src/ui/index.html');
-    window.webContents.openDevTools();
+  const window = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  window.loadFile("src/ui/index.html");
+  window.webContents.openDevTools();
 }
 
 module.exports = {
-    createWindow,
-
-}
+  createWindow,
+};
