@@ -1,4 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain } = require("electron");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 ipcMain.on("msg", (event, data) => {
   console.warn(data);
