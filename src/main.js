@@ -1,10 +1,11 @@
 const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 const dotenv = require("dotenv");
+const { getConnection } = require("../connection");
 
 dotenv.config();
 
 ipcMain.on("msg", (event, data) => {
-  console.warn(data);
+  createClient(data);
 });
 
 function createWindow() {
@@ -21,6 +22,12 @@ function createWindow() {
   window.webContents.openDevTools();
 }
 
+function createClient(client) {
+  const connectionMongoDB = getConnection();
+  console.log(client);
+}
+
 module.exports = {
   createWindow,
+  // createClient,
 };

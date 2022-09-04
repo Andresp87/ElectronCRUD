@@ -7,8 +7,12 @@
     "extends": ["airbnb-base", "prettier"],
     "overrides": [
     ],
+    "plugins": ["html"],
     "parserOptions": {
         "ecmaVersion": "latest"
+    },
+    "settings": {
+        "html/indent": "space" // indentation is one tab at the beginning of the line.
     },
     "rules": {
     }
