@@ -1,5 +1,5 @@
 const { createWindow } = require("./main");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 
 require("../connection");
 

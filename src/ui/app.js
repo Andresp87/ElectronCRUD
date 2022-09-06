@@ -5,16 +5,37 @@ const clientName = document.querySelector("#name");
 const clientWeight = document.querySelector("#weight");
 const clientComment = document.querySelector("#comment");
 
-function clickSave(newClient) {
-  ipcRenderer.send("msg", newClient);
+// function getAllClients() {
+//   ipcRenderer.send("getAllClientsMsg");
+// }
+
+function clickSave() {
+  if (
+    clientName.value.trim() === "" ||
+    clientWeight.value.trim() === "" ||
+    clientComment.value.trim() === ""
+  ) {
+    alert("Todos los campos deben estar llenos");
+  } else {
+    const newClient = {
+      name: clientName.value,
+      weight: clientWeight.value,
+      comment: clientComment.value,
+    };
+    ipcRenderer.send("createClientMsg", newClient);
+
+    console.log(newClient);
+    clientForm.reset();
+  }
 }
 
 clientForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const newClient = {
-    name: clientName.value,
-    weight: clientWeight.value,
-    comment: clientComment.value,
-  };
-  clickSave(newClient);
 });
+
+// ipcRenderer.send("getAllClientsMsg");
+
+// ipcRenderer.on("response", (e, args) => {
+//   console.log(e);
+//   console.log(args);
+// });

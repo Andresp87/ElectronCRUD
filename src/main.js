@@ -1,12 +1,8 @@
-const { app, BrowserWindow, Menu, ipcMain } = require("electron");
+const { BrowserWindow, ipcMain, Notification } = require("electron");
 const dotenv = require("dotenv");
-const { getConnection } = require("../connection");
+const { insertData, getAllData } = require("../connection");
 
 dotenv.config();
-
-ipcMain.on("msg", (event, data) => {
-  createClient(data);
-});
 
 function createWindow() {
   const window = new BrowserWindow({
@@ -22,12 +18,35 @@ function createWindow() {
   window.webContents.openDevTools();
 }
 
-function createClient(client) {
-  const connectionMongoDB = getConnection();
-  console.log(client);
+function getAllClients() {
+  try {
+    const result = getAllData();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-module.exports = {
-  createWindow,
-  // createClient,
-};
+function createClient(client) {
+  try {
+    insertData(client);
+
+    new Notification({
+      title: "New client notification",
+      body: "New client saved succesfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ipcMain.on("getAllClientsMsg", (e, args) => {
+//   const result = getAllData();
+//   e.reply("response", JSON.stringify(result));
+// });
+
+ipcMain.on("createClientMsg", (event, data) => {
+  createClient(data);
+});
+
+module.exports = { createWindow };

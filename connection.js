@@ -1,12 +1,28 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-// const user = process.env.MONGO_USER;
-// const password = process.env.MONGO_PASSWORD;
+// async function getAllData() {
+//   const uri = process.env.MONGO_URI;
 
-function queriesFunction(receivenFunction, dataToQuery) {}
+//   const client = new MongoClient(uri);
 
-async function main() {
+//   try {
+//     await client.connect();
+
+//     const result = await client
+//       .db("exampleElectronCRUD")
+//       .collection("clients")
+//       .find();
+
+//     return result.cursor;
+//   } catch (error) {
+//     console.log(error);
+//   } finally {
+//     await client.close();
+//   }
+// }
+
+async function insertData(data) {
   const uri = process.env.MONGO_URI;
 
   const client = new MongoClient(uri);
@@ -15,18 +31,10 @@ async function main() {
     await client.connect();
 
     // Insert data into MongoDb
-    await insertData(client, {
-      name: "clientsname",
-      weight: 123,
-      comment: "alllallakkksd",
-    });
-
-    // Find data from MongoDB by name
-    // await findData(client, "clientsname");
-
-    console.log("connected!!!!!!!!!!");
-
-    // await listDatabases(client);
+    await client
+      .db("exampleElectronCRUD")
+      .collection("clients")
+      .insertOne(data);
   } catch (error) {
     console.log(error);
   } finally {
@@ -34,45 +42,33 @@ async function main() {
   }
 }
 
-// Insert data into MongoDb
-async function insertData(client, newData) {
-  const result = await client
-    .db("exampleElectronCRUD")
-    .collection("clients")
-    .insertOne({ name: newData });
+// async function findData(data) {
+//   const uri = process.env.MONGO_URI;
 
-  console.log(`inserted IDzzzzzz: ${result.insertedId}`);
-  // console.log(result);
-}
+//   const client = new MongoClient(uri);
 
-// Find data from MongoDB by name
-// async function findData(client, dataToFind) {
-//   const result = await client
-//     .db("exampleElectronCRUD")
-//     .collection("clients")
-//     .findOne({ name: dataToFind });
+//   try {
+//     await client.connect();
 
-//   if (result) {
-//     console.log("nombre encontrado");
-//     console.log(result);
-//   } else {
-//     console.log(`no se encontro el nombre "${dataToFind}"`);
+//     const result = await client
+//       .db("exampleElectronCRUD")
+//       .collection("clients")
+//       .findOne({ name: data });
+
+//     if (result) {
+//       console.log("nombre encontrado");
+//       console.log(result);
+//     } else {
+//       console.log(`no se encontro el nombre "${data}"`);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   } finally {
+//     await client.close();
 //   }
 // }
 
-main().catch(console.error);
+insertData().catch(console.error);
+// findData().catch(console.error);
 
-// async function listDatabases(client){
-//     const databasesList = await client.db().admin().listDatabases();
-
-//     console.log("Databases:");
-//     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-// };
-
-// async function createClient(){}
-
-function getConnection() {
-  return main;
-}
-
-module.exports = { getConnection };
+module.exports = { insertData };
