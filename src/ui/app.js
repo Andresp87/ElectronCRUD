@@ -27,6 +27,10 @@ function clickSave() {
     console.log(newClient);
     clientForm.reset();
   }
+
+  const printResults = ipcRenderer.send("getAllClientsMsg");
+
+  console.log(printResults);
 }
 
 clientForm.addEventListener("submit", (e) => {

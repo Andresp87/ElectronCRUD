@@ -1,6 +1,6 @@
 const { BrowserWindow, ipcMain, Notification } = require("electron");
 const dotenv = require("dotenv");
-const { insertData, getAllData } = require("../connection");
+const { insertData, getAllData } = require("./connection");
 
 dotenv.config();
 
@@ -19,12 +19,14 @@ function createWindow() {
 }
 
 function getAllClients() {
+  let result;
   try {
-    const result = getAllData();
-    return result;
+    result = getAllData();
   } catch (error) {
     console.log(error);
   }
+
+  return result;
 }
 
 function createClient(client) {
@@ -40,10 +42,10 @@ function createClient(client) {
   }
 }
 
-// ipcMain.on("getAllClientsMsg", (e, args) => {
-//   const result = getAllData();
-//   e.reply("response", JSON.stringify(result));
-// });
+ipcMain.on("getAllClientsMsg", (e, args) => {
+  const result = getAllData();
+  e.reply("response", result);
+});
 
 ipcMain.on("createClientMsg", (event, data) => {
   createClient(data);
