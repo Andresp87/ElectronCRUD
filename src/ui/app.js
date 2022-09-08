@@ -9,11 +9,13 @@ const clientComment = document.querySelector("#comment");
 //   ipcRenderer.send("getAllClientsMsg");
 // }
 
+console.log("app.js");
+
 function clickSave() {
   if (
-    clientName.value.trim() === "" ||
-    clientWeight.value.trim() === "" ||
-    clientComment.value.trim() === ""
+    !clientName.value.trim() ||
+    !clientWeight.value.trim() ||
+    !clientComment.value.trim()
   ) {
     alert("Todos los campos deben estar llenos");
   } else {

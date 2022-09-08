@@ -1,14 +1,17 @@
-const { BrowserWindow, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const dotenv = require("dotenv");
-const { insertData, getAllData } = require("./connection");
+const path = require("path");
 
 dotenv.config();
+const connection = require("./db/connection");
+require("electron-reload")(__dirname);
 
-function createWindow() {
+const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
@@ -16,39 +19,18 @@ function createWindow() {
   });
   window.loadFile("src/ui/index.html");
   window.webContents.openDevTools();
-}
+};
 
-function getAllClients() {
-  let result;
-  try {
-    result = getAllData();
-  } catch (error) {
-    console.log(error);
-  }
+// Quit app when all windows are closed
+app.on("window-all-closed", app.quit);
 
-  return result;
-}
+app.whenReady().then(createWindow);
 
-function createClient(client) {
-  try {
-    insertData(client);
+// ipcMain.on("getAllClientsMsg", (e, args) => {
+//   const result = getAllData();
+//   e.reply("response", result);
+// });
 
-    new Notification({
-      title: "New client notification",
-      body: "New client saved succesfully",
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-ipcMain.on("getAllClientsMsg", (e, args) => {
-  const result = getAllData();
-  e.reply("response", result);
-});
-
-ipcMain.on("createClientMsg", (event, data) => {
-  createClient(data);
-});
-
-module.exports = { createWindow };
+// ipcMain.on("createClientMsg", (event, data) => {
+//   createClient(data);
+// });
